@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>CATEA — Conquistas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-page="achievements">
+
+<a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+<div class="toast-container" id="toastContainer" role="status" aria-live="polite"></div>
+
+<nav class="nav" role="navigation" aria-label="Navegação principal">
+  <div class="nav-logo" onclick="showPage('dashboard')">CATEA 🌿</div>
+  <div class="nav-actions">
+    <button class="nav-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Alternar tema">🌙</button>
+    <button class="nav-btn" onclick="showPage('settings')" aria-label="Configurações">⚙️</button>
+    <button class="nav-btn" onclick="showPage('achievements')" aria-label="Conquistas">🏅</button>
+    <div class="nav-avatar" onclick="showPage('profile')" role="button" tabindex="0" aria-label="Meu perfil">🦋</div>
+  </div>
+</nav>
+
+<nav class="bottom-nav" aria-label="Navegação rápida">
+  <button class="bottom-nav-btn" onclick="showPage('dashboard')" aria-label="Início"><span class="bottom-nav-icon">🏠</span>Início</button>
+  <button class="bottom-nav-btn" onclick="showPage('games')" aria-label="Jogos"><span class="bottom-nav-icon">🎮</span>Jogos</button>
+  <button class="bottom-nav-btn" onclick="showPage('profile')" aria-label="Perfil"><span class="bottom-nav-icon">🦋</span>Perfil</button>
+  <button class="bottom-nav-btn" onclick="showPage('settings')" aria-label="Configurações"><span class="bottom-nav-icon">⚙️</span>Ajustes</button>
+</nav>
+
+<main id="main-content" class="page-enter" style="padding-top:80px;min-height:100vh">
+  <div style="max-width:800px;margin:0 auto;padding:40px 24px">
+    <button class="btn btn-ghost btn-sm" onclick="goBack()" style="margin-bottom:24px">← Voltar</button>
+
+    <h1 style="font-family:var(--font-title);font-size:2rem;font-weight:800;margin-bottom:8px">🏅 Conquistas</h1>
+    <p style="color:var(--text2);margin-bottom:40px">Cada medalha celebra sua jornada de conexão 🌸</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px"
+      role="list" id="achievementsList">
+    </div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
