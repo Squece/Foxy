@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>CATEA — Configurações</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-page="settings">
+
+<a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+<div class="toast-container" id="toastContainer" role="status" aria-live="polite"></div>
+
+<nav class="nav" role="navigation" aria-label="Navegação principal">
+  <div class="nav-logo" onclick="showPage('dashboard')">CATEA 🌿</div>
+  <div class="nav-actions">
+    <button class="nav-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Alternar tema">🌙</button>
+    <button class="nav-btn" onclick="showPage('settings')" aria-label="Configurações">⚙️</button>
+    <button class="nav-btn" onclick="showPage('achievements')" aria-label="Conquistas">🏅</button>
+    <div class="nav-avatar" onclick="showPage('profile')" role="button" tabindex="0" aria-label="Meu perfil">🦋</div>
+  </div>
+</nav>
+
+<nav class="bottom-nav" aria-label="Navegação rápida">
+  <button class="bottom-nav-btn" onclick="showPage('dashboard')" aria-label="Início"><span class="bottom-nav-icon">🏠</span>Início</button>
+  <button class="bottom-nav-btn" onclick="showPage('games')" aria-label="Jogos"><span class="bottom-nav-icon">🎮</span>Jogos</button>
+  <button class="bottom-nav-btn" onclick="showPage('profile')" aria-label="Perfil"><span class="bottom-nav-icon">🦋</span>Perfil</button>
+  <button class="bottom-nav-btn active" onclick="showPage('settings')" aria-label="Configurações"><span class="bottom-nav-icon">⚙️</span>Ajustes</button>
+</nav>
+
+<main id="main-content" class="page-enter">
+  <div class="settings-wrap">
+    <div class="settings-content">
+      <button class="btn btn-ghost btn-sm" onclick="goBack()" style="margin-bottom:24px">← Voltar</button>
+
+      <h1 style="font-family:var(--font-title);font-size:2rem;font-weight:800;margin-bottom:8px">⚙️ Configurações Sensoriais</h1>
+      <p style="color:var(--text2);margin-bottom:40px">Central de controle do seu conforto. Mude o que precisar, quando quiser.</p>
+
+      <!-- Visual -->
+      <div class="settings-section">
+        <h2 class="settings-title">👁️ Visual</h2>
+        <div class="settings-stack">
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Modo Escuro</div><div style="font-size:0.85rem;color:var(--text3)">Fundo escuro, mais calmo para os olhos</div></div>
+            <button class="toggle" id="darkToggle" onclick="toggleTheme()" role="switch" aria-checked="false" aria-label="Modo escuro"></button>
+          </div>
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Modo Sensorial Suave</div><div style="font-size:0.85rem;color:var(--text3)">Remove sombras e suaviza bordas</div></div>
+            <button class="toggle" id="sensoryToggle" onclick="toggleSensory()" role="switch" aria-checked="false" aria-label="Modo sensorial suave"></button>
+          </div>
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Alto Contraste Extra</div><div style="font-size:0.85rem;color:var(--text3)">Aumenta contraste para leitura mais fácil</div></div>
+            <button class="toggle" id="contrastToggle" onclick="toggleContrast()" role="switch" aria-checked="false" aria-label="Alto contraste"></button>
+          </div>
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Fonte para dislexia</div><div style="font-size:0.85rem;color:var(--text3)">Tipografia adaptada para leitura mais confortável</div></div>
+            <button class="toggle" id="dyslexiaToggle" onclick="toggleDyslexia()" role="switch" aria-checked="false" aria-label="Fonte para dislexia"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motion -->
+      <div class="settings-section">
+        <h2 class="settings-title">✨ Movimento</h2>
+        <div class="settings-stack">
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Reduzir todas as animações</div><div style="font-size:0.85rem;color:var(--text3)">Remove transições e efeitos visuais</div></div>
+            <button class="toggle" id="motionToggle" onclick="toggleMotion()" role="switch" aria-checked="false" aria-label="Reduzir animações"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sound -->
+      <div class="settings-section">
+        <h2 class="settings-title">🔊 Sons</h2>
+        <div class="settings-stack">
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Silenciar todos os sons</div><div style="font-size:0.85rem;color:var(--text3)">Desativa efeitos sonoros e notificações</div></div>
+            <button class="toggle" id="soundToggle" onclick="toggleSound()" role="switch" aria-checked="false" aria-label="Silenciar sons"></button>
+          </div>
+          <div class="card" style="border:1px solid var(--border)">
+            <div style="font-weight:600;margin-bottom:12px">🌿 Som ambiente</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <button class="tag active" onclick="setAmbient('none')" id="ambient-none" role="radio" aria-checked="true">🔇 Nenhum</button>
+              <button class="tag" onclick="setAmbient('rain')" id="ambient-rain" role="radio" aria-checked="false">🌧️ Chuva suave</button>
+              <button class="tag" onclick="setAmbient('waves')" id="ambient-waves" role="radio" aria-checked="false">🌊 Ondas</button>
+              <button class="tag" onclick="setAmbient('forest')" id="ambient-forest" role="radio" aria-checked="false">🌲 Floresta</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communication -->
+      <div class="settings-section">
+        <h2 class="settings-title">💬 Comunicação</h2>
+        <div class="settings-stack">
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Modo Silencioso padrão</div><div style="font-size:0.85rem;color:var(--text3)">Entra em todos os jogos sem chat automaticamente</div></div>
+            <button class="toggle" id="silentToggle" onclick="toggleSilent()" role="switch" aria-checked="false" aria-label="Modo silencioso padrão"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="settings-section">
+        <h2 class="settings-title">🛡️ Privacidade e Segurança</h2>
+        <div class="settings-stack">
+          <div class="toggle-wrap">
+            <div><div style="font-weight:600">Chats efêmeros</div><div style="font-size:0.85rem;color:var(--text3)">Mensagens somem após a sessão (padrão recomendado)</div></div>
+            <button class="toggle on" role="switch" aria-checked="true" aria-label="Chats efêmeros"></button>
+          </div>
+          <button class="btn btn-ghost w-full" style="color:#FC8181;border-color:#FC8181;width:100%" onclick="showPage('safety')">
+            🔴 Central de Segurança
+          </button>
+        </div>
+      </div>
+
+      <!-- Font size -->
+      <div class="settings-section">
+        <h2 class="settings-title">🔤 Tamanho da fonte</h2>
+        <div style="display:flex;align-items:center;gap:16px">
+          <button class="btn btn-ghost btn-sm" onclick="changeFontSize(-1)" aria-label="Diminuir fonte">A−</button>
+          <div style="flex:1;background:var(--bg3);height:8px;border-radius:4px;position:relative">
+            <div id="fontBar" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:20px;height:20px;background:var(--blue-deep);border-radius:50%;cursor:pointer"></div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="changeFontSize(1)" aria-label="Aumentar fonte">A+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

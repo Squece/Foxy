@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>CATEA — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-page="dashboard">
+
+<a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+<div class="toast-container" id="toastContainer" role="status" aria-live="polite"></div>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Navegação principal">
+  <div class="nav-logo" onclick="showPage('dashboard')" aria-label="CATEA - Início">CATEA 🌿</div>
+  <div class="nav-actions">
+    <button class="nav-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Alternar tema" title="Tema">🌙</button>
+    <button class="nav-btn" onclick="showPage('settings')" aria-label="Configurações" title="Configurações">⚙️</button>
+    <button class="nav-btn" onclick="showPage('achievements')" aria-label="Conquistas" title="Conquistas">🏅</button>
+    <div class="nav-avatar" onclick="showPage('profile')" role="button" tabindex="0" aria-label="Meu perfil">🦋</div>
+  </div>
+</nav>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" aria-label="Navegação rápida">
+  <button class="bottom-nav-btn active" onclick="showPage('dashboard')" aria-label="Início"><span class="bottom-nav-icon">🏠</span>Início</button>
+  <button class="bottom-nav-btn" onclick="showPage('games')" aria-label="Jogos"><span class="bottom-nav-icon">🎮</span>Jogos</button>
+  <button class="bottom-nav-btn" onclick="showPage('profile')" aria-label="Perfil"><span class="bottom-nav-icon">🦋</span>Perfil</button>
+  <button class="bottom-nav-btn" onclick="showPage('settings')" aria-label="Configurações"><span class="bottom-nav-icon">⚙️</span>Ajustes</button>
+</nav>
+
+<!-- COMFORT MODAL -->
+<div class="comfort-modal" id="comfortModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="comfort-title">
+  <div class="comfort-card">
+    <h2 class="comfort-title" id="comfort-title">Como você quer jogar? 🌟</h2>
+    <p class="comfort-sub">Escolha o que faz você se sentir mais confortável agora</p>
+    <div class="comfort-options" role="radiogroup">
+      <button class="comfort-opt" onclick="startGame('unknown')">
+        <span class="comfort-opt-icon">🌍</span>
+        <div class="comfort-opt-text"><strong>Com desconhecidos</strong><span>Conhecer pessoas novas que também adoram jogos</span></div>
+      </button>
+      <button class="comfort-opt" onclick="startGame('friends')">
+        <span class="comfort-opt-icon">💚</span>
+        <div class="comfort-opt-text"><strong>Só com amigos</strong><span>Jogar com pessoas da sua lista de amigos</span></div>
+      </button>
+      <button class="comfort-opt" onclick="startGame('ai')">
+        <span class="comfort-opt-icon">🤖</span>
+        <div class="comfort-opt-text"><strong>Com a IA CATEA</strong><span>Praticar e se divertir sem pressão social</span></div>
+      </button>
+      <button class="comfort-opt" onclick="startGame('silent')">
+        <span class="comfort-opt-icon">🔇</span>
+        <div class="comfort-opt-text"><strong>Modo Silencioso</strong><span>Sem chat, só ações. Máximo de calma</span></div>
+      </button>
+    </div>
+    <button class="btn btn-ghost w-full" onclick="closeComfort()" style="margin-top:16px;width:100%">Cancelar</button>
+  </div>
+</div>
+
+<main id="main-content" class="page-enter">
+  <div class="dashboard-wrap">
+    <!-- Hero welcome -->
+    <div class="dash-hero" aria-label="Boas-vindas">
+      <div class="dash-hero-inner">
+        <div class="dash-avatar-lg" aria-hidden="true">🦋</div>
+        <div class="dash-welcome">
+          <h1 id="dashGreeting">Olá, Viajante das Estrelas! 🌟</h1>
+          <p>Como você está se sentindo hoje?</p>
+          <div class="mood-bar" style="margin-top:16px" role="group" aria-label="Como você está hoje">
+            <button class="mood-btn" onclick="setMood('great')" aria-label="Ótimo">😄<span>Ótimo</span></button>
+            <button class="mood-btn" onclick="setMood('good')" aria-label="Bem">🙂<span>Bem</span></button>
+            <button class="mood-btn" onclick="setMood('ok')" aria-label="Mais ou menos">😐<span>Ok</span></button>
+            <button class="mood-btn" onclick="setMood('tired')" aria-label="Cansado">😴<span>Cansado</span></button>
+            <button class="mood-btn" onclick="setMood('quiet')" aria-label="Modo quieto">🌙<span>Quieto</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <div class="dash-grid">
+        <!-- Main column -->
+        <div>
+          <div class="section-header">
+            <h2 class="section-label">🎮 Jogos rápidos</h2>
+            <button class="btn btn-ghost btn-sm" onclick="showPage('games')">Ver todos</button>
+          </div>
+          <div class="games-grid" id="dashGames" role="list" aria-label="Jogos disponíveis"></div>
+
+          <!-- Garden -->
+          <div class="section-header" style="margin-top:32px">
+            <h2 class="section-label">🌱 Meu jardim de conexões</h2>
+            <span class="badge badge-green">Nível 3</span>
+          </div>
+          <div class="garden-wrap" aria-label="Jardim de progresso">
+            <p style="font-size:0.85rem;color:var(--green-deep);font-weight:600;margin-bottom:8px">Cada conexão faz uma planta crescer 🌸</p>
+            <div class="garden-items" aria-hidden="true">
+              <div class="garden-item"><span class="garden-emoji">🌱</span><span class="garden-label">Primeira</span></div>
+              <div class="garden-item"><span class="garden-emoji">🌿</span><span class="garden-label">Amizade</span></div>
+              <div class="garden-item"><span class="garden-emoji">🌺</span><span class="garden-label">Criativa</span></div>
+              <div class="garden-item"><span class="garden-emoji">🌳</span><span class="garden-label">Especial</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+          <div class="section-header">
+            <h2 class="section-label">💚 Amigos online</h2>
+            <span class="badge badge-green">3 online</span>
+          </div>
+          <div class="friends-list" id="friendsList" role="list" aria-label="Amigos online"></div>
+
+          <div class="card" style="margin-top:24px;background:linear-gradient(135deg,var(--purple-pale),var(--blue-pale))">
+            <div style="font-size:2rem;margin-bottom:8px">🏅</div>
+            <h3 style="font-family:var(--font-title);font-weight:700;margin-bottom:4px">Nova conquista!</h3>
+            <p style="font-size:0.85rem;color:var(--text2)">Você ganhou "Primeira Conexão" — sua jornada começou! 🌸</p>
+            <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="showPage('achievements')">Ver todas →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

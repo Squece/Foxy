@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>CATEA — Criar conta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-page="register">
+
+<a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+<div class="toast-container" id="toastContainer" role="status" aria-live="polite"></div>
+
+<main id="main-content" class="page-enter">
+  <div class="auth-wrap">
+    <div class="auth-card" role="main">
+
+      <div class="auth-logo">CATEA 🌿</div>
+      <p class="auth-tagline">Crie seu espaço — rápido e sem pressão</p>
+
+      <!-- ── Apelido ──────────────────────────────────────── -->
+      <div class="form-group">
+        <label for="regName">Como você quer ser chamado(a)?</label>
+        <input
+          type="text"
+          id="regName"
+          class="input"
+          placeholder="Seu apelido ou nome"
+          aria-required="true"
+          autocomplete="nickname"
+          maxlength="30"
+        />
+        <p style="font-size:0.8rem;color:var(--text3);margin-top:6px">
+          ✨ Pode ser só um apelido. Ninguém saberá seu nome real.
+        </p>
+      </div>
+
+      <!-- ── E-mail (opcional — torna conta permanente) ───── -->
+      <div class="form-group">
+        <label for="regEmail">
+          E-mail
+          <span style="font-size:0.8rem;color:var(--text3);font-weight:400"> (opcional)</span>
+        </label>
+        <input
+          type="email"
+          id="regEmail"
+          class="input"
+          placeholder="seu@email.com"
+          autocomplete="email"
+        />
+        <p style="font-size:0.8rem;color:var(--text3);margin-top:6px">
+          🔒 Com e-mail, sua conta é permanente e você pode recuperar o acesso.
+          Sem e-mail, você entra como anônimo.
+        </p>
+      </div>
+
+      <!-- ── Senha (aparece quando e-mail é preenchido) ────── -->
+      <div class="form-group" id="passGroup" style="display:none">
+        <label for="regPass">Senha</label>
+        <input
+          type="password"
+          id="regPass"
+          class="input"
+          placeholder="Mínimo 6 caracteres"
+          autocomplete="new-password"
+          minlength="6"
+        />
+      </div>
+
+      <!-- ── Avatar ──────────────────────────────────────── -->
+      <div class="form-group">
+        <label>Escolha seu avatar 🎨</label>
+        <div
+          class="avatar-grid"
+          id="avatarGrid"
+          role="radiogroup"
+          aria-label="Selecionar avatar"
+        ></div>
+      </div>
+
+      <!-- ── Interesses ─────────────────────────────────── -->
+      <div class="form-group">
+        <label>Seus interesses (escolha até 3) 🌈</label>
+        <div
+          style="display:flex;flex-wrap:wrap;gap:8px"
+          id="interestsGrid"
+          role="group"
+          aria-label="Interesses"
+        ></div>
+      </div>
+
+      <!-- ── Conforto social ────────────────────────────── -->
+      <div class="form-group">
+        <label>Nível de conforto social</label>
+        <div style="display:flex;gap:12px;flex-wrap:wrap" role="radiogroup" aria-label="Nível de conforto">
+          <button class="tag active" id="comfort-low"  onclick="setComfortLevel('low')"    role="radio" aria-checked="true">🌱 Baixo</button>
+          <button class="tag"        id="comfort-med"  onclick="setComfortLevel('medium')" role="radio" aria-checked="false">🌿 Médio</button>
+          <button class="tag"        id="comfort-high" onclick="setComfortLevel('high')"   role="radio" aria-checked="false">🌳 Alto</button>
+        </div>
+        <p style="font-size:0.8rem;color:var(--text3);margin-top:8px">
+          Isso ajuda a te conectar com pessoas no seu ritmo. Pode mudar a qualquer hora!
+        </p>
+      </div>
+
+      <!-- ── Submit ─────────────────────────────────────── -->
+      <button
+        class="btn btn-primary w-full"
+        onclick="completeRegister()"
+        style="width:100%;margin-top:8px"
+      >
+        🌟 Criar minha conta →
+      </button>
+
+      <p class="auth-link"><a href="login.html">Já tenho conta</a></p>
+
+    </div>
+  </div>
+</main>
+
+<!--
+  ⚠️  IMPORTANTE: type="module" obrigatório para o Firebase funcionar.
+-->
+<script type="module" src="app.js"></script>
+
+<!-- Mostra/esconde campo de senha conforme e-mail é preenchido -->
+<script>
+  document.getElementById("regEmail")?.addEventListener("input", function() {
+    const passGroup = document.getElementById("passGroup");
+    if (passGroup) {
+      passGroup.style.display = this.value.trim() ? "block" : "none";
+    }
+  });
+</script>
+
+</body>
+</html>

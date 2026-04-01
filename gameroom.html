@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>CATEA — Sala de Jogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-page="gameroom">
+
+<a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+<div class="toast-container" id="toastContainer" role="status" aria-live="polite"></div>
+
+<main id="main-content" class="page-enter">
+  <div class="gameroom-wrap">
+    <div class="gameroom-header" role="banner">
+      <button class="btn btn-ghost btn-sm" onclick="leaveGame()" aria-label="Sair do jogo">← Sair</button>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-family:var(--font-title);font-weight:700" id="currentGameTitle">🎨 Desenho Colaborativo</span>
+        <span class="badge badge-green">2 jogadores</span>
+      </div>
+      <div class="participants" aria-label="Participantes">
+        <div class="participant-bubble" title="Você">🦋</div>
+        <div class="participant-bubble" title="IA CATEA">🤖</div>
+      </div>
+    </div>
+
+    <div class="gameroom-body">
+      <!-- Game Area -->
+      <div class="game-area" id="gameArea" aria-label="Área do jogo">
+        <!-- Timer -->
+        <div class="game-timer" id="gameTimer" role="timer" aria-label="Tempo restante: 5 minutos">
+          ⏱️ <span id="timerDisplay">5:00</span>
+        </div>
+
+        <!-- Canvas Game -->
+        <div class="canvas-wrap" id="canvasGame">
+          <canvas id="drawCanvas" width="600" height="450"
+            aria-label="Canvas de desenho colaborativo. Use o mouse ou toque para desenhar."
+            role="img"></canvas>
+        </div>
+
+        <!-- Quiz Game -->
+        <div class="quiz-wrap" id="quizGame" style="display:none">
+          <div class="quiz-team" aria-label="Equipe">
+            <div class="quiz-player">🦋 Você</div>
+            <div class="quiz-player">🤖 IA</div>
+          </div>
+          <div class="quiz-question" id="quizQuestion" role="heading" aria-level="2"></div>
+          <div class="quiz-options" id="quizOptions" role="radiogroup" aria-label="Opções de resposta"></div>
+        </div>
+
+        <!-- Story Game -->
+        <div class="story-wrap" id="storyGame" style="display:none">
+          <h2 style="font-family:var(--font-title);font-size:1.3rem;font-weight:700;margin-bottom:16px;text-align:center">📖 Nossa história</h2>
+          <div class="story-area" id="storyArea" aria-live="polite" aria-label="Área da história"></div>
+          <div class="story-suggestions">
+            <div class="story-sug-label">✨ Sugestões para continuar:</div>
+            <div class="story-sug-list" id="storySuggestions" role="group" aria-label="Sugestões de frases"></div>
+          </div>
+          <div class="flex gap-md" style="margin-top:16px">
+            <input type="text" class="input" id="storyInput" placeholder="Escreva sua frase…" style="flex:1"/>
+            <button class="btn btn-primary btn-sm" onclick="addStoryLine()">Enviar →</button>
+          </div>
+        </div>
+
+        <!-- Puzzle Game -->
+        <div id="puzzleGame" style="display:none;align-items:center;justify-content:center;width:100%;height:100%;padding-top:60px">
+          <div class="puzzle-wrap" id="puzzleGrid" style="grid-template-columns:repeat(3,1fr)" role="grid" aria-label="Quebra-cabeça cooperativo"></div>
+        </div>
+
+        <!-- Emoji Game -->
+        <div class="emoji-game-wrap" id="emojiGame" style="display:none">
+          <h2 style="font-family:var(--font-title);font-size:1.3rem;font-weight:700;margin-bottom:16px;text-align:center">😄 Adivinhe os Emojis!</h2>
+          <p style="text-align:center;color:var(--text2);margin-bottom:20px">A IA está pensando em algo… adivinhe com emojis!</p>
+          <div class="emoji-display" id="emojiDisplay" aria-label="Emojis para adivinhar" role="img"></div>
+          <div style="margin-bottom:16px">
+            <p style="font-size:0.9rem;color:var(--text2);margin-bottom:8px">💡 Dica: <span id="emojiHint" style="font-weight:600"></span></p>
+          </div>
+          <div class="emoji-input-row">
+            <input type="text" class="input" id="emojiAnswer" placeholder="Sua resposta…" style="flex:1"/>
+            <button class="btn btn-primary btn-sm" onclick="checkEmojiAnswer()">Responder!</button>
+          </div>
+        </div>
+
+        <!-- Canvas Tools -->
+        <div class="canvas-tools" id="canvasTools" aria-label="Ferramentas de desenho">
+          <div style="display:flex;gap:8px" role="group" aria-label="Cores">
+            <div class="color-dot selected" style="background:#5BAED9" onclick="setColor('#5BAED9')" role="radio" aria-label="Azul" aria-checked="true" tabindex="0"></div>
+            <div class="color-dot" style="background:#9C6FD6" onclick="setColor('#9C6FD6')" role="radio" aria-label="Roxo" aria-checked="false" tabindex="0"></div>
+            <div class="color-dot" style="background:#4DB87A" onclick="setColor('#4DB87A')" role="radio" aria-label="Verde" aria-checked="false" tabindex="0"></div>
+            <div class="color-dot" style="background:#E8954A" onclick="setColor('#E8954A')" role="radio" aria-label="Laranja" aria-checked="false" tabindex="0"></div>
+            <div class="color-dot" style="background:#FC8181" onclick="setColor('#FC8181')" role="radio" aria-label="Rosa" aria-checked="false" tabindex="0"></div>
+            <div class="color-dot" style="background:#F6E05E" onclick="setColor('#F6E05E')" role="radio" aria-label="Amarelo" aria-checked="false" tabindex="0"></div>
+            <div class="color-dot" style="background:#1A2332" onclick="setColor('#1A2332')" role="radio" aria-label="Preto" aria-checked="false" tabindex="0"></div>
+          </div>
+          <div style="width:1px;height:32px;background:var(--border)" aria-hidden="true"></div>
+          <div style="display:flex;gap:6px" role="group" aria-label="Tamanho do pincel">
+            <button class="size-btn active" onclick="setSize(4)" aria-label="Pincel pequeno" aria-pressed="true">S</button>
+            <button class="size-btn" onclick="setSize(10)" aria-label="Pincel médio" aria-pressed="false">M</button>
+            <button class="size-btn" onclick="setSize(20)" aria-label="Pincel grande" aria-pressed="false">L</button>
+          </div>
+          <div style="width:1px;height:32px;background:var(--border)" aria-hidden="true"></div>
+          <button class="size-btn" onclick="clearCanvas()" aria-label="Limpar canvas" title="Limpar">🗑️</button>
+        </div>
+
+        <!-- Game Feedback -->
+        <div id="gameFeedback" style="
+          position:absolute;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+          background:var(--bg2);border:2px solid var(--green);border-radius:var(--radius);
+          padding:12px 24px;font-weight:700;color:var(--green-deep);
+          opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+          pointer-events:none;white-space:nowrap;z-index:20;
+          box-shadow:0 4px 20px var(--shadow);"
+          role="status" aria-live="polite"></div>
+      </div>
+
+      <!-- Chat Panel -->
+      <div class="chat-panel" id="chatPanel" role="complementary" aria-label="Chat guiado">
+        <div class="chat-header">
+          💬 Chat Calmo
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto;min-height:36px;padding:0 12px" onclick="toggleChat()" aria-label="Minimizar chat">−</button>
+        </div>
+        <div class="chat-messages" id="chatMessages" aria-live="polite" aria-label="Mensagens"></div>
+        <div class="quick-replies">
+          <div class="quick-replies-label">💬 Respostas rápidas</div>
+          <div class="quick-reply-btns" role="group" aria-label="Respostas rápidas">
+            <button class="qr-btn" onclick="sendQuickReply('Que legal! 👍')">Que legal! 👍</button>
+            <button class="qr-btn" onclick="sendQuickReply('Adorei! 💙')">Adorei! 💙</button>
+            <button class="qr-btn" onclick="sendQuickReply('Pode repetir? 🤔')">Pode repetir? 🤔</button>
+            <button class="qr-btn" onclick="sendQuickReply('Estou gostando! 😊')">Estou gostando 😊</button>
+            <button class="qr-btn" onclick="sendQuickReply('Preciso de uma pausa 🌙')">Pausa 🌙</button>
+            <button class="qr-btn" onclick="sendQuickReply('👏')">👏</button>
+            <button class="qr-btn" onclick="sendQuickReply('🌟')">🌟</button>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <textarea class="chat-input" id="chatInput" placeholder="Mensagem opcional…" rows="1" aria-label="Digitar mensagem"></textarea>
+          <button class="btn btn-primary btn-sm" onclick="sendChatMsg()" aria-label="Enviar mensagem">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

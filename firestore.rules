@@ -1,0 +1,83 @@
+// ============================================================
+//  Foxy — firestore.rules
+//  Regras de segurança do Firestore
+//
+//  Como aplicar:
+//    Firebase Console → Firestore → Regras → Cole este conteúdo
+//  OU via CLI:
+//    firebase deploy --only firestore:rules
+// ============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Coleção "users" ──────────────────────────────────────
+    match /users/{userId} {
+
+      // Leitura: apenas o próprio usuário pode ler seus dados
+      allow read: if request.auth != null
+                  && request.auth.uid == userId;
+
+      // Criação: usuário autenticado cria apenas o próprio documento
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && validUserData(request.resource.data);
+
+      // Atualização: usuário só atualiza o próprio doc, mantendo regras
+      allow update: if request.auth != null
+                    && request.auth.uid == userId
+                    && validUserUpdate(request.resource.data);
+
+      // Exclusão: desabilitada (soft-delete via campo ativo)
+      allow delete: if false;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    //  Funções de validação
+    // ══════════════════════════════════════════════════════════
+
+    /** Valida os campos obrigatórios na criação */
+    function validUserData(data) {
+      return data.keys().hasAll(['uid', 'displayName', 'avatar', 'interests',
+                                  'comfortLevel', 'provider', 'createdAt', 'lastLogin'])
+          // uid bate com o auth
+          && data.uid == request.auth.uid
+          // displayName: 2–30 chars
+          && data.displayName is string
+          && data.displayName.size() >= 2
+          && data.displayName.size() <= 30
+          // avatar: string não vazia
+          && data.avatar is string
+          && data.avatar.size() > 0
+          // interests: lista com no máximo 3 itens
+          && data.interests is list
+          && data.interests.size() <= 3
+          // comfortLevel: valores permitidos
+          && data.comfortLevel in ['low', 'medium', 'high']
+          // provider: valores permitidos
+          && data.provider in ['email', 'google', 'anonymous'];
+    }
+
+    /** Valida campos permitidos na atualização */
+    function validUserUpdate(data) {
+      // Campos imutáveis que NÃO podem ser alterados
+      let immutable = ['uid', 'email', 'provider', 'googleId', 'createdAt'];
+
+      return !data.keys().hasAny(immutable)
+          // Ainda garante que os campos mutáveis respeitam as regras
+          && (!data.keys().hasAll(['displayName']) || (
+                data.displayName is string
+                && data.displayName.size() >= 2
+                && data.displayName.size() <= 30
+              ))
+          && (!data.keys().hasAll(['interests']) || (
+                data.interests is list
+                && data.interests.size() <= 3
+              ))
+          && (!data.keys().hasAll(['comfortLevel']) || (
+                data.comfortLevel in ['low', 'medium', 'high']
+              ));
+    }
+  }
+}

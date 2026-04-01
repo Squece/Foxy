@@ -1,0 +1,132 @@
+/* ============================================================
+   CATEA — styles-auth.css
+   Estilos adicionais para o sistema de autenticação
+   Adicione  <link rel="stylesheet" href="styles-auth.css"/>
+   após styles.css nas páginas login.html e register.html
+   ============================================================ */
+
+/* ── Toast notifications ─────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 9999;
+  width: min(90vw, 420px);
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .3s ease, transform .3s ease;
+  pointer-events: auto;
+}
+
+.toast-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-success { background: #d1fae5; color: #065f46; }
+.toast-error   { background: #fee2e2; color: #991b1b; }
+.toast-info    { background: #dbeafe; color: #1e40af; }
+
+/* ── Spinner de loading ──────────────────────────────────── */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  vertical-align: middle;
+}
+
+/* ── Campo com erro ──────────────────────────────────────── */
+.input-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239,68,68,.2);
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* ── Avatar grid ─────────────────────────────────────────── */
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.avatar-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  font-size: 1.6rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: var(--surface2, #f3f4f6);
+  cursor: pointer;
+  transition: border-color .15s, transform .15s, background .15s;
+}
+
+.avatar-option:hover {
+  border-color: var(--primary, #6ee7b7);
+  transform: scale(1.08);
+}
+
+.avatar-option.selected {
+  border-color: var(--primary, #10b981);
+  background: var(--primary-light, #d1fae5);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px var(--primary-light, #a7f3d0);
+}
+
+/* ── Tag / interesse ─────────────────────────────────────── */
+.tag {
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 2px solid var(--border, #e5e7eb);
+  background: var(--surface2, #f9fafb);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  color: var(--text1, #1f2937);
+}
+
+.tag:hover  { border-color: var(--primary, #10b981); }
+.tag.active {
+  background: var(--primary, #10b981);
+  border-color: var(--primary, #10b981);
+  color: #fff;
+}
+
+/* ── Botão desabilitado ──────────────────────────────────── */
+.btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+  pointer-events: none;
+}
